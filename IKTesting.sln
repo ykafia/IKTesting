@@ -1,0 +1,11 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 16
+VisualStudioVersion = 16.0.0.0
+MinimumVisualStudioVersion = 16.0.0.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IKTesting.Windows", "IKTesting.Windows\IKTesting.Windows.csproj", "{A5C520CF-349A-4740-A143-931AF3F2DA1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IKTesting", "IKTesting\IKTesting.csproj", "{6A37513E-8E4A-4048-96EA-6E284461C2F9}"
+EndProject
+Global
+EndGlobal

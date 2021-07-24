@@ -67,10 +67,10 @@ namespace IKTesting
                 ShortestPath(_graph.Vertices.First(x => x.Name == n), out var p);
                 var d = p.Sum(x => x.Source.Distance);
                 var sk = Entity.Get<ModelComponent>().Skeleton;
-                var currNode = sk.NodeTransformations[24];
+                var currNode = sk.NodeTransformations[7];
                 var direction =  e.Transform.WorldMatrix.TranslationVector - currNode.WorldMatrix.TranslationVector;
                 direction.Normalize();
-                sk.NodeTransformations[24].Transform.Rotation = DirRotation(direction);
+                sk.NodeTransformations[7].Transform.Rotation = DirRotation(direction);
 
                 // if(d< Vector3.Distance(p.First().Source.Node.WorldMatrix.TranslationVector, e.Transform.WorldMatrix.TranslationVector))
                 // {

@@ -74,19 +74,19 @@ Hierarchy:
                     c3661c211e44e15d70c69c14cf47aaad: !TransformComponent
                         Id: 80da2c97-496d-4e8d-a010-18abee570e0e
                         Position: {X: 0.0, Y: 0.0, Z: 0.0}
-                        Rotation: {X: 0.0, Y: 0.70710677, Z: 0.0, W: 0.70710677}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children:
                             88cac108e3d6fcd28509033fc48e42a2: ref!! ab6568b8-dcd5-40d1-84bc-8059ced20a8f
                     d8be1ccf9d7abb2fda8f8ab074a7b0ba: !ModelComponent
                         Id: 40aa55e8-4b95-46c0-8d7b-1b6bb27c77b4
-                        Model: f68ea240-695a-4de5-9884-60d77544fcd6:Models/mannequinModel
+                        Model: null
                         Materials: {}
                     71c57c785cd76d6ee42640bc2518d29c: !IKComponent
                         Id: 3d028c92-adfb-42fe-9a97-e54448799f71
                         Number of iteration: 0
                         BoneToTarget:
-                            ad655f136d05f60bf3486418f28b18e0~CATRigLArmPalm: ref!! e1c028c8-dc4a-453c-8ba9-e092859de0f2
+                            ad655f136d05f60bf3486418f28b18e0~ForeArm.L: ref!! e1c028c8-dc4a-453c-8ba9-e092859de0f2
         -   Entity:
                 Id: e07fc339-50ce-4356-a1e8-8957585d7ba8
                 Name: Directional light
@@ -118,7 +118,7 @@ Hierarchy:
                 Components:
                     23a8b2810b431e86a4bcf7e04a4edf75: !TransformComponent
                         Id: ab6568b8-dcd5-40d1-84bc-8059ced20a8f
-                        Position: {X: 1.7060645, Y: 1.6571206, Z: 0.5347185}
+                        Position: {X: 0.47063577, Y: 1.6571206, Z: -1.3229762}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}

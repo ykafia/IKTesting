@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using QuikGraph.Algorithms.ShortestPath;
 using Stride.Core.Mathematics;
+using Stride.Games;
 
 namespace IKTesting
 {
@@ -21,6 +22,7 @@ namespace IKTesting
     public class IKComponent : EntityComponent
     {
         private AdjacencyGraph<NodeData,Edge<NodeData>> _graph;
+
         private IVertexAndEdgeListGraph<NodeData,Edge<NodeData>> Graph 
         {
             get {return _graph;}
@@ -45,7 +47,7 @@ namespace IKTesting
                     if(parent != null)
                     {
                         _graph.AddVertex(x);
-                        parent.Distance = Vector3.Distance(parent.Node.Transform.Position,x.Node.Transform.Position); //Vector3.Distance(parent.Node.WorldMatrix.TranslationVector, x.Node.WorldMatrix.TranslationVector);
+                        parent.Distance = Vector3.Distance(parent.Node.WorldMatrix.TranslationVector,x.Node.WorldMatrix.TranslationVector); //Vector3.Distance(parent.Node.WorldMatrix.TranslationVector, x.Node.WorldMatrix.TranslationVector);
                         _graph.AddEdge(new Edge<NodeData>(parent,x));
                     }
                     else
@@ -58,33 +60,56 @@ namespace IKTesting
             ShortestPath = Graph.ShortestPathsDijkstra(_ => 1, _graph.Vertices.First());
         }
 
-        public void ComputeFabrik()
+        public void ComputeFabrik(GameTime time)
         {
             foreach(var (n,e) in BoneToTarget)
             {
                 ShortestPath(_graph.Vertices.First(x => x.Name == n), out var p);
-                var path = p.ToList();
-                var tmp1 = new FabrikData[path.Count +1];
-                var tmp2 = new FabrikData[path.Count +1];
-                tmp1[0] = new FabrikData{Position = path[0].Source.Node.Transform.Position, Distance = path[0].Source.Distance};
-                for (int i = 1; i < path.Count; i++)
-                {
-                    tmp1[i] = new FabrikData{Position = path[i].Target.Node.Transform.Position, Distance = path[i].Target.Distance};
-                }
-                tmp1[^0] = new FabrikData{Position = e.Transform.Position, Distance = Vector3.Distance(tmp1[^1].Position, e.Transform.Position)};
-                for (int i = 0; i < NbIteration; i++)
-                {
+                var d = p.Sum(x => x.Source.Distance);
+                var sk = Entity.Get<ModelComponent>().Skeleton;
+                var currNode = sk.NodeTransformations[24];
+                var direction =  e.Transform.WorldMatrix.TranslationVector - currNode.WorldMatrix.TranslationVector;
+                direction.Normalize();
+                sk.NodeTransformations[24].Transform.Rotation = DirRotation(direction);
+
+                // if(d< Vector3.Distance(p.First().Source.Node.WorldMatrix.TranslationVector, e.Transform.WorldMatrix.TranslationVector))
+                // {
+                //     var direction =  e.Transform.Position -  p.First().Source.Node.Transform.Position;
+                //     direction.Normalize();
+                //     p.ToList().ForEach( v => sk.NodeTransformations[v.Target.Index].Transform.Rotation = DirRotation(direction));
+                // }
+                // var path = p.ToList();
+                // var tmp1 = new FabrikData[path.Count +1];
+                // var tmp2 = new FabrikData[path.Count +1];
+                // tmp1[0] = new FabrikData{Position = path[0].Source.Node.Transform.Position, Distance = path[0].Source.Distance};
+                // for (int i = 1; i < path.Count; i++)
+                // {
+                //     tmp1[i] = new FabrikData{Position = path[i].Target.Node.Transform.Position, Distance = path[i].Target.Distance};
+                // }
+                // tmp1[^0] = new FabrikData{Position = e.Transform.Position, Distance = Vector3.Distance(tmp1[^1].Position, e.Transform.Position)};
+                // for (int i = 0; i < NbIteration; i++)
+                // {
                     
-                    for (int j = tmp1.Length-2; j > 0; j--)
-                    {
+                //     for (int j = tmp1.Length-2; j > 0; j--)
+                //     {
                         
-                    }
-                    for (int j = 1; j < tmp1.Length; j++)
-                    {
-                        // tmp1[j] = 
-                    }
-                }
+                //     }
+                //     for (int j = 1; j < tmp1.Length; j++)
+                //     {
+                //         // tmp1[j] = 
+                //     }
+                // }
             }
+            
+        }
+        public Quaternion DirRotation(Vector3 dir)
+        {
+            var m = Matrix.LookAtRH(Vector3.Zero, dir, Vector3.UnitZ);
+            return Quaternion.RotationMatrix(m);
+        }
+        public Matrix LookAt(Vector3 dir)
+        {
+            return Matrix.LookAtRH(Vector3.Zero, dir, Vector3.UnitY);
             
         }
         public bool CheckValid()
@@ -103,6 +128,7 @@ namespace IKTesting
         public class FabrikData
         {
             public Vector3 Position;
+            public Quaternion Rotation;
             public float Distance;
         }
     }

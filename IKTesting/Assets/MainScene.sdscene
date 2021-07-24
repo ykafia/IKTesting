@@ -82,16 +82,11 @@ Hierarchy:
                         Id: 40aa55e8-4b95-46c0-8d7b-1b6bb27c77b4
                         Model: f68ea240-695a-4de5-9884-60d77544fcd6:Models/mannequinModel
                         Materials: {}
-                    e75f536c07e03939003447308d93cce2: !AnimationComponent
-                        Id: e1a4f62f-188a-407e-a3a0-7fefae5cc5d7
-                        Animations:
-                            886b94a15af5caa1c2577f3dcc3704aa~Run: 448ca260-c8b7-4f63-9bf6-e58a5970a830:Animations/Run
                     71c57c785cd76d6ee42640bc2518d29c: !IKComponent
                         Id: 3d028c92-adfb-42fe-9a97-e54448799f71
+                        Number of iteration: 0
                         BoneToTarget:
-                            430618133cdd913cc43674dac15f5b32~CATRigLArmPalm: ref!! e1c028c8-dc4a-453c-8ba9-e092859de0f2
-                    0566a048026615e0b0264e8cef2e620a: !IKTesting.StartRunAnimation,IKTesting
-                        Id: 6035ac7c-2c0e-45e1-ad48-add2dd131362
+                            ad655f136d05f60bf3486418f28b18e0~CATRigLArmPalm: ref!! e1c028c8-dc4a-453c-8ba9-e092859de0f2
         -   Entity:
                 Id: e07fc339-50ce-4356-a1e8-8957585d7ba8
                 Name: Directional light
@@ -123,7 +118,7 @@ Hierarchy:
                 Components:
                     23a8b2810b431e86a4bcf7e04a4edf75: !TransformComponent
                         Id: ab6568b8-dcd5-40d1-84bc-8059ced20a8f
-                        Position: {X: 0.6107977, Y: 1.5534494, Z: 0.9347079}
+                        Position: {X: 1.7060645, Y: 1.6571206, Z: 0.5347185}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
@@ -131,3 +126,5 @@ Hierarchy:
                         Id: cdde4020-ff07-4d6f-9629-a2af600ad82d
                         Model: dfee7474-ad5a-4d73-8f4e-17d8bfac5a71:Sphere
                         Materials: {}
+                    1d5fd5c18b7172eb2d459fb62220c775: !IKTesting.MoveTarget,IKTesting
+                        Id: 8b0547c4-1304-4e36-b5fa-e2a597d85aa1

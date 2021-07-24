@@ -21,7 +21,8 @@ namespace IKTesting
                 {
                     var s = c.Key.Entity.Get<ModelComponent>().Skeleton;
                     var x = c.Key.Entity.EntityManager.Processors;
-                    s.NodeTransformations[21].Transform.Rotation *= Quaternion.RotationY(30 * (float)context.Time.Elapsed.TotalSeconds);
+                    c.Key.ComputeFabrik(context.Time);
+                    //s.NodeTransformations[21].Transform.Rotation *= Quaternion.RotationY(30 * (float)context.Time.Elapsed.TotalSeconds);
                     // s.NodeTransformations[21].Transform.Position.Y += 5;
 
                 } catch (Exception)

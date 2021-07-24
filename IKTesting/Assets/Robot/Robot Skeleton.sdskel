@@ -1,0 +1,26 @@
+!Skeleton
+Id: 25bc75ac-221d-4636-98dc-650ae2f41cbf
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file C:/Users/kafia/Documents/blender try/AssetsGameJam/Robot.gltf
+PivotPosition: {X: 0.0, Y: 0.0, Z: 0.0}
+ScaleImport: 0.2
+Nodes:
+    a158192ecb036f3634d41eb51cf4daa8: {Name: Armature, Depth: 0}
+    04e782d26d6f61f0c5267545b3925e87: {Name: Robot, Depth: 1}
+    ef3537966b838df938af9d63d0d83b22: {Name: Torso, Depth: 1}
+    24be741cb68f378c1ea5edcc69ab43df: {Name: Neck, Depth: 2}
+    beadd3b946013f4cb941ae0dd0c8f075: {Name: Head, Depth: 3}
+    331d90702a7756c1e0600e3bbd48c138: {Name: Arm.R, Depth: 2}
+    efc16931dde3736dd9b0601d82f4474b: {Name: ForeArm.R, Depth: 3}
+    84704dc04e0f4d179c1bcabfbb4f3b18: {Name: Arm.L, Depth: 2}
+    ff83db3fd44433e598053aa279676149: {Name: ForeArm.L, Depth: 3}
+    5fae7022604ebf5dbfa11e7629c7b395: {Name: Pelvis, Depth: 2}
+    1b4ae763130bf2a3191ae1265294aaf3: {Name: Leg.R, Depth: 3}
+    d04c6476832eb80cd444950cb4d57668: {Name: Tibia.R, Depth: 4}
+    24ed4316202f1da716c49c9cf9c2dffa: {Name: Foot.R, Depth: 5}
+    11590f5de1facb9583dbcd2e0bab493d: {Name: Leg.L, Depth: 3}
+    cf84f3bc3ffb5344d9e92822fbab2b67: {Name: Tibia.L, Depth: 4}
+    75f8b83526677bc6bdc0a54ecab082cb: {Name: Foot.L, Depth: 5}
+~SourceHashes:
+    2f784f902323878b6be4ee5f594009aa~C:/Users/kafia/Documents/blender try/AssetsGameJam/Robot.gltf: 31bd7b0c178a608d0b8c6baf8a2f91c2

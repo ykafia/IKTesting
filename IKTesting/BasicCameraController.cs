@@ -53,6 +53,7 @@ namespace IKTesting
 
         public override void Update()
         {
+            DebugText.Print(Entity.Transform.Position.ToString(), Int2.One * 10);
             ProcessInput();
             UpdateTransform();
         }

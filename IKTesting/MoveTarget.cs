@@ -23,7 +23,7 @@ namespace IKTesting
             var s = Game.UpdateTime.Total.TotalSeconds;
             var coss = (float)Math.Cos(s);
             var sins = (float)Math.Sin(s);
-            Entity.Transform.Position = new Vector3(0,1,1) * 2 + coss * Vector3.UnitX * 3 ;
+            Entity.Transform.Position = new Vector3(1,1,0) * 2 + coss * Vector3.UnitX * 3 ;
         }
     }
 }

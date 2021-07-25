@@ -11,6 +11,7 @@ Hierarchy:
         - ref!! 5f9ad3b4-9585-4b25-80c6-cd92df760df0
         - ref!! 0d0ee105-bf19-4720-ac74-29b12a1e0156
         - ref!! 6bc827ac-be63-4ee8-ae68-737c93077ecb
+        - ref!! e1c028c8-dc4a-453c-8ba9-e092859de0f2
     Parts:
         -   Entity:
                 Id: 0d0ee105-bf19-4720-ac74-29b12a1e0156
@@ -75,12 +76,11 @@ Hierarchy:
                         Id: 80da2c97-496d-4e8d-a010-18abee570e0e
                         Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
-                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                        Children:
-                            88cac108e3d6fcd28509033fc48e42a2: ref!! ab6568b8-dcd5-40d1-84bc-8059ced20a8f
+                        Scale: {X: 0.2, Y: 0.2, Z: 0.2}
+                        Children: {}
                     d8be1ccf9d7abb2fda8f8ab074a7b0ba: !ModelComponent
                         Id: 40aa55e8-4b95-46c0-8d7b-1b6bb27c77b4
-                        Model: null
+                        Model: 602f46a7-7139-4e16-9e34-5c4fefa9fe1e:Robot/Robot
                         Materials: {}
                     71c57c785cd76d6ee42640bc2518d29c: !IKComponent
                         Id: 3d028c92-adfb-42fe-9a97-e54448799f71
@@ -94,7 +94,7 @@ Hierarchy:
                     f63abdc3b59db5a431d67d0e20931ecd: !TransformComponent
                         Id: 6c3bca24-d28a-43be-91aa-657a3f1eb933
                         Position: {X: 0.0, Y: 2.0, Z: 0.0}
-                        Rotation: {X: 1.131334E-08, Y: -0.9659258, Z: -0.25881904, W: -4.222196E-08}
+                        Rotation: {X: -0.015134446, Y: 0.98106027, Z: 0.1729874, W: 0.08583171}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
                     fdf3448b5f2f245435001927230accac: !LightComponent

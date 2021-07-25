@@ -11,7 +11,7 @@ namespace IKTesting
     {
         public IKProcessor()
         {
-            Order = -205;
+            Order = 5;
         }
         public override void Draw(RenderContext context)
         {

@@ -63,51 +63,38 @@ namespace IKTesting
 
         public void ComputeFabrik(GameTime time)
         {
-            
+            var sk = Entity.Get<ModelComponent>().Skeleton;
             foreach(var (n,e) in BoneToTarget)
             {
-                var md = Entity.Get<ModelComponent>();
-                ShortestPath(_graph.Vertices.First(x => x.Name == n), out var p);
-                var d = p.Sum(x => x.Source.Distance);
-                var sk = Entity.Get<ModelComponent>().Skeleton;
-                var currNode = sk.NodeTransformations[4];
-                // var target = WorldToLocal(e.Transform, currNode);
-                // var direction = target - currNode.Transform.Position; 
-                Vector3 target = Vector3.TransformCoordinate( e.Transform.WorldMatrix.TranslationVector ,Matrix.Invert(currNode.WorldMatrix));
-                // sk.NodeTransformations[10].Transform.Rotation *= -Quaternion.RotationY(30 * (float)time.Elapsed.TotalSeconds);
-                sk.NodeTransformations[4].Transform.Position = target;
+                var no = sk.NodeTransformations[20];
+                var noL = no.LocalMatrix;
+                var noW = no.WorldMatrix;
+                var pnW = sk.NodeTransformations[no.ParentIndex].WorldMatrix;
                 
+                var ivp = Quaternion.RotationMatrix(Matrix.Invert(pnW));
+                var dir = e.Transform.Position - noW.TranslationVector;
+                var rot = Quaternion.BetweenDirections(Entity.Transform.WorldMatrix.Forward, dir);     
+                rot = Quaternion.RotationYawPitchRoll(rot.YawPitchRoll.X,rot.YawPitchRoll.Y,0);           
+                // sk.NodeTransformations[20].Transform.Rotation = ivp * rot;
+                // sk.NodeTransformations[20].Transform.Rotation *= Quaternion.RotationY(30) * (float)time.Elapsed.TotalSeconds;
+                // sk.NodeTransformations[20].Transform.Position = Vector3.Transform(e.Transform.Position,Matrix.Invert(pnW)).XYZ();
+
             }
             
         }
-        public Vector3 WorldToLocal(TransformComponent tc, ModelNodeTransformation nt)
-        {
-            Matrix.Invert(ref nt.WorldMatrix, out Matrix worldMatrixInv);
-            tc.GetWorldTransformation(out Vector3 p, out Quaternion r, out Vector3 s);
-            Vector3.Transform(ref p, ref worldMatrixInv, out Vector3 result);
-            return result;
-        }
-        public Vector3 WorldToLocal(Vector3 p, ModelNodeTransformation nt)
-        {
-            Matrix.Invert(ref nt.WorldMatrix, out Matrix worldMatrixInv);
-            Vector3.TransformCoordinate(ref p, ref worldMatrixInv, out Vector3 result);
-            return result;
-        }
-        public Quaternion DirRotation(Vector3 dir)
-        {
-            var m = Matrix.LookAtRH(Vector3.Zero, dir, Vector3.UnitY);
-            return Quaternion.RotationMatrix(m);
-        }
-        public Matrix LookAt(Vector3 dir)
-        {
-            return Matrix.LookAtRH(Vector3.Zero, dir, Vector3.UnitY);
-            
-        }
+        
+        
+
+        
+        
         public bool CheckValid()
         {
             var mc = Entity.Get<ModelComponent>();
             return mc != null && mc.Skeleton != null;
         }
+
+        #region InverseKinematicsData
+
         internal class NodeData
         {
             public int Index {get;set;}
@@ -122,5 +109,6 @@ namespace IKTesting
             public Quaternion Rotation;
             public float Distance;
         }
+        #endregion
     }
 }

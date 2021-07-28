@@ -12,6 +12,7 @@ Hierarchy:
         - ref!! 0d0ee105-bf19-4720-ac74-29b12a1e0156
         - ref!! 6bc827ac-be63-4ee8-ae68-737c93077ecb
         - ref!! e1c028c8-dc4a-453c-8ba9-e092859de0f2
+        - ref!! e895e7d1-963c-488f-98f2-317077b8d536
     Parts:
         -   Entity:
                 Id: 0d0ee105-bf19-4720-ac74-29b12a1e0156
@@ -87,6 +88,9 @@ Hierarchy:
                         Number of iteration: 0
                         BoneToTarget:
                             f47e8e422235f631969f42725c8004ce~CATRigSpine2: ref!! e1c028c8-dc4a-453c-8ba9-e092859de0f2
+                    e030455cebdda2244547e3af4cfa69df: !IKTesting.RotateBones,IKTesting
+                        Id: b87781a3-b52d-43c0-a835-fad509822a1f
+                        target: ref!! e1c028c8-dc4a-453c-8ba9-e092859de0f2
         -   Entity:
                 Id: e07fc339-50ce-4356-a1e8-8957585d7ba8
                 Name: Directional light
@@ -128,3 +132,21 @@ Hierarchy:
                         Materials: {}
                     1d5fd5c18b7172eb2d459fb62220c775: !IKTesting.MoveTarget,IKTesting
                         Id: 8b0547c4-1304-4e36-b5fa-e2a597d85aa1
+        -   Entity:
+                Id: e895e7d1-963c-488f-98f2-317077b8d536
+                Name: BoneForward
+                Components:
+                    100732d1446b4d9cb0ef887412123638: !TransformComponent
+                        Id: 32c673f7-8f6a-49c3-974e-2baa0cc2efe3
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    14d3d8651a669e5de0e2e099582a8118: !ModelComponent
+                        Id: 4feeaa38-f012-41e0-b13b-f91f1c61b2a7
+                        Model: dfee7474-ad5a-4d73-8f4e-17d8bfac5a71:Sphere
+                        Materials: {}
+                    054a0bb31fd36c99602cfd2ad7557643: !IKTesting.PositionBone,IKTesting
+                        Id: 4849a268-3d00-4d26-9794-fb1bddf04cf1
+                        Source: ref!! 6bc827ac-be63-4ee8-ae68-737c93077ecb
+                        Mesh: dfee7474-ad5a-4d73-8f4e-17d8bfac5a71:Sphere

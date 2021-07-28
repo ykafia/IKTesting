@@ -64,25 +64,34 @@ namespace IKTesting
         public void ComputeFabrik(GameTime time)
         {
             var sk = Entity.Get<ModelComponent>().Skeleton;
+            // Quaternion.RotationYawPitchRoll()
+            var i = 24;
+            var no = sk.NodeTransformations[i];
+            var cnPos = sk.NodeTransformations[no.ParentIndex].WorldMatrix.TranslationVector;
+            var npos = no.WorldMatrix.TranslationVector;
+            var tpos = npos + Vector3.UnitY;
+            var p = Matrix.Invert(sk.NodeTransformations[no.ParentIndex].WorldMatrix);
+            
+            var rot = LookAt(npos, npos - Vector3.UnitX + Vector3.UnitY);
             foreach(var (n,e) in BoneToTarget)
             {
-                var no = sk.NodeTransformations[20];
-                var noL = no.LocalMatrix;
-                var noW = no.WorldMatrix;
-                var pnW = sk.NodeTransformations[no.ParentIndex].WorldMatrix;
-                
-                var ivp = Quaternion.RotationMatrix(Matrix.Invert(pnW));
-                var dir = e.Transform.Position - noW.TranslationVector;
-                var rot = Quaternion.BetweenDirections(Entity.Transform.WorldMatrix.Forward, dir);     
-                rot = Quaternion.RotationYawPitchRoll(rot.YawPitchRoll.X,rot.YawPitchRoll.Y,0);           
-                // sk.NodeTransformations[20].Transform.Rotation = ivp * rot;
-                // sk.NodeTransformations[20].Transform.Rotation *= Quaternion.RotationY(30) * (float)time.Elapsed.TotalSeconds;
-                // sk.NodeTransformations[20].Transform.Position = Vector3.Transform(e.Transform.Position,Matrix.Invert(pnW)).XYZ();
-
+                var rot2 = BDir(cnPos - npos, e.Transform.Position - npos);
+                sk.NodeTransformations[i].Transform.Rotation = Quaternion.RotationMatrix(p) * rot2;
             }
             
         }
-        
+        public static Quaternion LookAt(Vector3 source, Vector3 target)
+        {
+            Vector3 forwardVector = Vector3.Normalize(target - source);
+            Vector3 rotAxis = Vector3.Cross(-Vector3.UnitZ, forwardVector);
+            float dot = Vector3.Dot(-Vector3.UnitZ, forwardVector);
+            return Quaternion.Normalize(new Quaternion(rotAxis,dot+1));
+        }
+        public static Quaternion BDir(Vector3 sourceDir, Vector3 targetDir)
+        {
+            var t = Quaternion.BetweenDirections(sourceDir,targetDir).YawPitchRoll;
+            return Quaternion.RotationYawPitchRoll(t.X,t.Y,0);
+        }
         
 
         

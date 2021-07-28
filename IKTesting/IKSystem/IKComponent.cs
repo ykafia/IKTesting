@@ -67,24 +67,26 @@ namespace IKTesting
             // Quaternion.RotationYawPitchRoll()
             var i = 24;
             var no = sk.NodeTransformations[i];
-            var cnPos = sk.NodeTransformations[no.ParentIndex].WorldMatrix.TranslationVector;
-            var npos = no.WorldMatrix.TranslationVector;
-            var tpos = npos + Vector3.UnitY;
             var p = Matrix.Invert(sk.NodeTransformations[no.ParentIndex].WorldMatrix);
-            
-            
+           
             foreach(var (n,e) in BoneToTarget)
             {
-                var rot = Matrix.LookAtRH(Entity.Transform.Position,e.Transform.Position * new Vector3(1,0,1),Vector3.UnitY);
-                var rot2 = BDir(cnPos - npos, e.Transform.Position - npos);
-                Entity.Transform.Rotation = LookAt(e.Transform.Position * new Vector3(1,0,1) - Entity.Transform.Position,Vector3.UnitY);
-                // sk.NodeTransformations[i].Transform.Rotation = Quaternion.RotationMatrix(p) * rot2;
+                var noWP = no.WorldMatrix.TranslationVector;
+                var cpos = Vector3.Transform(sk.NodeTransformations[i+1].WorldMatrix.TranslationVector,p).XYZ();
+                var localChildPos = Vector3.Transform(sk.NodeTransformations[i+1].WorldMatrix.TranslationVector, p).XYZ();
+                var localTargetPos = Vector3.Transform(e.Transform.Position,p).XYZ();
+                
+                var rot = Quaternion.RotationMatrix(Matrix.LookAtRH(no.Transform.Position,localTargetPos,no.LocalMatrix.Up));
+                var cor = Quaternion.BetweenDirections(no.LocalMatrix.Forward, cpos - no.Transform.Position);
+                
+                sk.NodeTransformations[i].Transform.Rotation = rot;
+                
             }
             
         }
         public static Quaternion LookAt(Vector3 forward, Vector3 up)
         {
-        
+            // Taken from http://answers.unity.com/answers/467979/view.html
             forward.Normalize();
         
             Vector3 vector = Vector3.Normalize(forward);

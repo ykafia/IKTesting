@@ -33,13 +33,23 @@ namespace IKTesting
 
         [DataMember("Number of iteration")]
         public uint NbIteration;
-        public Dictionary<string,Entity> BoneToTarget = new();
+
+        public string Root;
+        public List<IKSelector> BoneToTarget = new();
         
         public void BuildGraph()
         {
             _graph = new();
             var sk = Entity.Get<ModelComponent>().Skeleton;
             var nodes = sk.Nodes.Select((x,i) => new NodeData{Index = i, Name = x.Name, Parent = x.ParentIndex, Node = sk.NodeTransformations[i]}).ToList();
+            foreach(var n in nodes)
+            {
+                if(sk.Nodes.Any(x => x.ParentIndex == n.Index))
+                    n.Child = sk.Nodes.Select((x,i) => (x.ParentIndex,i)).FirstOrDefault(x => n.Index == x.ParentIndex).i;
+                else
+                    n.Child = -1;
+                
+            }
             nodes.ForEach(
                 x =>
                 {
@@ -57,35 +67,77 @@ namespace IKTesting
                     }
                 }
             );
-            Leaves = _graph.Vertices.Where(x => !_graph.Edges.Any(e => e.Source.Index == x.Index)).Where(x => BoneToTarget.Keys.Contains(x.Name)).ToList();
+            Leaves = _graph.Vertices.Where(x => !_graph.Edges.Any(e => e.Source.Index == x.Index)).Where(x => BoneToTarget.Select(y => y.Name).Contains(x.Name)).ToList();
             ShortestPath = Graph.ShortestPathsDijkstra(_ => 1, _graph.Vertices.First());
         }
 
         public void ComputeFabrik(GameTime time)
         {
             var sk = Entity.Get<ModelComponent>().Skeleton;
-            // Quaternion.RotationYawPitchRoll()
-            var i = 24;
-            var no = sk.NodeTransformations[i];
-            var p = Matrix.Invert(sk.NodeTransformations[no.ParentIndex].WorldMatrix);
            
             // Foreach Bone strings that needs targets
-            foreach(var (n,e) in BoneToTarget)
+            foreach(var (n,root,e) in BoneToTarget.Select(x => (x.Name,x.Root,x.Target)))
             {
+                ShortestPath = Graph.ShortestPathsDijkstra(_ => 1, _graph.Vertices.First(x => x.Name == root));
+                // Find Bone
+                ShortestPath(Graph.Edges.Where(x => x.Target.Name == n).First().Target, out var path);
+                
                 // Compute Fabrik
 
-                // Compute rotations for each points of the targets              
+                List<FabrikData> tmp1 = new(path.Count());
+                // List<FabrikData> tmp2 = new(path.Count());
+                // Fill tmp1
+                foreach(var tmp in path)
+                {
+                    tmp1.Add(new FabrikData{Position = tmp.Target.Position, Distance = tmp.Target.Distance, Node = tmp.Target});
+                }
+                tmp1.Last().Position = e.Transform.Position;
+                for(uint r =0; r < NbIteration; r++)
+                {
+                    for (int i = tmp1.Count - 2; i > 0; i--)
+                    {
+                        tmp1[i].Position = tmp1[i+1].Position + Vector3.Normalize(tmp1[i].Position - tmp1[i+1].Position) * tmp1[i].Distance;
+                    }
+                    for (int i = 1; i < tmp1.Count; i++)
+                    {
+                        tmp1[i].Position = tmp1[i-1].Position + Vector3.Normalize(tmp1[i].Position - tmp1[i-1].Position) * tmp1[i-1].Distance;
+                    }
+                }
+                foreach(var np in tmp1)
+                {
+                    // Compute rotations for each points of the targets     
+                    var bone = np.Node;
+                    
+                    var no = sk.NodeTransformations[bone.Index];
+                    var cno = sk.NodeTransformations[bone.Child];
+                    var p = Matrix.Invert(sk.NodeTransformations[no.ParentIndex].WorldMatrix);
+
+
+                    var noWP = no.WorldMatrix.TranslationVector;
+                    var cpos = Vector3.Transform(cno.WorldMatrix.TranslationVector,p).XYZ();
+                    var tpos = Vector3.Transform(np.Position,p).XYZ();
+                    
+                    var forward = Quaternion.RotationMatrix(Matrix.LookAtRH(no.Transform.Position, tpos,no.LocalMatrix.Up));
+                    var boneDir = Quaternion.Normalize(Quaternion.Invert(Quaternion.BetweenDirections(no.LocalMatrix.Forward,cpos - no.Transform.Position)));
+                    
+                    sk.NodeTransformations[bone.Index].Transform.Rotation = forward * boneDir;
+                }
+                
+
             }
             
         }
         public static Quaternion BoneLookAt(Vector3 childWPos, Vector3 targetPos, Vector3 nodeLocalPos, Matrix nodeLocal, Matrix parentWorldInverted)
         {
+            
             var cpos = Vector3.Transform(childWPos,parentWorldInverted).XYZ();
             var tpos = Vector3.Transform(targetPos,parentWorldInverted).XYZ();
-            var forward = Quaternion.RotationMatrix(Matrix.LookAtRH(nodeLocalPos, tpos,nodeLocal.Up));
-            forward.Normalize();
-            return forward * Quaternion.Normalize(Quaternion.Invert(Quaternion.BetweenDirections(nodeLocal.Forward,cpos - nodeLocalPos)));
+            var tpos2 = Vector3.Transform(Vector3.One,parentWorldInverted).XYZ();
+            var forward = Quaternion.RotationMatrix(Matrix.LookAtRH(nodeLocalPos, tpos2,nodeLocal.Up));
+            //forward.Normalize();
+            return forward;// * Quaternion.Normalize(Quaternion.Invert(Quaternion.BetweenDirections(nodeLocal.Forward,cpos - nodeLocalPos)));
         }
+        
         
 
         
@@ -103,14 +155,20 @@ namespace IKTesting
             public int Index {get;set;}
             public string Name {get;set;}
             public int Parent {get;set;}
+            public int Child {get;set;}
             public float Distance {get;set;}
+            public Vector3 Position
+            {
+                get{return Node.WorldMatrix.TranslationVector;}
+            }
             public ModelNodeTransformation Node {get;set;}
         }
-        public class FabrikData
+        internal class FabrikData
         {
             public Vector3 Position;
-            public Quaternion Rotation;
+            // public Quaternion Rotation;
             public float Distance;
+            public NodeData Node;
         }
         #endregion
     }
